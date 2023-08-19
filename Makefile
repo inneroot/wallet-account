@@ -12,13 +12,6 @@ build: clean
 clean:
 	@rm -rf $(BUILD_DIR)
 
-# Build and run the Docker container
-docker-build:
-	@docker build -t $(BINARY_NAME) .
-
-docker-run:
-	@docker run -it $(BINARY_NAME)
-
 run: build
 	@./${BUILD_DIR}/${BINARY_NAME}
 
@@ -36,3 +29,10 @@ vet:
 
 lint:
 	@golangci-lint run --enable-all
+
+docker-build:
+	@docker build -t go-$(BINARY_NAME) .
+
+docker-run:
+	@docker run --rm -it go-$(BINARY_NAME)
+

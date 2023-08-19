@@ -1,11 +1,15 @@
-FROM golang:1.21
+FROM golang:1.21 AS builder
 
-COPY . /go/src/app
+WORKDIR /
 
-WORKDIR /go/src/app/cmd/app
+COPY . .
 
-RUN go build -o wallet main.go
+RUN go build -o build/wallet cmd/app/main.go
+
+FROM scratch
+
+COPY --from=builder /build .
 
 EXPOSE 8080
 
-CMD ["./wallet"]
+ENTRYPOINT ["./wallet"]
